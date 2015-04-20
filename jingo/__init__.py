@@ -9,11 +9,16 @@ import re
 
 from django.conf import settings
 from django.template.base import Origin, TemplateDoesNotExist
-from django.template.context import get_standard_processors
 from django.template.loader import BaseLoader
 from django.utils.importlib import import_module
 
 import jinja2
+
+try:
+    from django.template.engine import Engine
+except ImportError:
+    Engine = None
+from django.template.context import get_standard_processors as get_standard_processors_1_7
 
 VERSION = (0, 7, 0)
 __version__ = '.'.join(map(str, VERSION))
@@ -28,6 +33,12 @@ EXCLUDE_APPS = (
 log = logging.getLogger('jingo')
 
 _helpers_loaded = False
+
+def get_standard_processors():
+    if Engine:
+        return Engine.get_default().template_context_processors
+    else:
+        return get_standard_processors_1_7()
 
 
 class Environment(jinja2.Environment):
