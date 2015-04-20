@@ -18,7 +18,7 @@ try:
     from django.template.engine import Engine
 except ImportError:
     Engine = None
-from django.template.context import get_standard_processors as get_standard_processors_1_7
+    from django.template.context import get_standard_processors as get_standard_processors_1_7
 
 VERSION = (0, 7, 0)
 __version__ = '.'.join(map(str, VERSION))
